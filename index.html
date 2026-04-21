@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FUTA Aggregate Calculator 2025/2026 | Federal University of Technology Akure</title>
+<meta name="description" content="Calculate your FUTA screening aggregate score using the official 75:25 formula. Compare with departmental cutoffs and find your best admission options.">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['Georgia', 'Cambria', 'serif'],
+          body: ['Trebuchet MS', 'Lucida Sans Unicode', 'sans-serif'],
+        },
+        colors: {
+          fgreen: { DEFAULT: '#1565C0', light: '#1976D2', dark: '#0D47A1', faint: '#E3F2FD' },
+          fgold: { DEFAULT: '#F4A261', dark: '#e07a3a', light: '#fde8d4' },
+        },
+        animation: {
+          'fade-in': 'fadeIn 0.4s ease-out',
+          'slide-up': 'slideUp 0.4s ease-out',
+          'pulse-soft': 'pulseSoft 2s ease-in-out infinite',
+          'bounce-in': 'bounceIn 0.5s cubic-bezier(0.36,0.07,0.19,0.97)',
+        },
+        keyframes: {
+          fadeIn: { from: { opacity: 0 }, to: { opacity: 1 } },
+          slideUp: { from: { opacity: 0, transform: 'translateY(20px)' }, to: { opacity: 1, transform: 'translateY(0)' } },
+          pulseSoft: { '0%,100%': { opacity: 1 }, '50%': { opacity: 0.7 } },
+          bounceIn: { '0%': { transform: 'scale(0.8)', opacity: 0 }, '60%': { transform: 'scale(1.05)' }, '100%': { transform: 'scale(1)', opacity: 1 } },
+        }
+      }
+    }
+  }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --fgreen: #1565C0; --fgold: #F4A261;
+    --fblue: #1565C0; --fblue-light: #1976D2; --fblue-faint: #E3F2FD;
+  }
+  body { font-family: 'Trebuchet MS', 'Lucida Sans Unicode', sans-serif; }
+  .hero-bg {
+    background: linear-gradient(135deg, #0D47A1 0%, #1565C0 40%, #1565C0 70%, #0D47A1 100%);
+    position: relative; overflow: hidden;
+  }
+  .hero-bg::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-orb {
+    position: absolute; border-radius: 50%; opacity: 0.08;
+    background: radial-gradient(circle, #F4A261, transparent);
+  }
+  .card { background: white; border-radius: 16px; box-shadow: 0 4px 24px rgba(21,101,192,0.08); }
+  .dark .card { background: #0D1B4B; box-shadow: 0 4px 24px rgba(0,0,0,0.3); }
+  .dept-row { transition: all 0.2s ease; }
+  .dept-row:hover { background: var(--fblue-faint); transform: translateX(2px); }
+  .dark .dept-row:hover { background: #0D2B6B; }
+  .badge-safe { background: #BBDEFB; color: #0D47A1; border: 1px solid #90CAF9; }
+  .badge-border { background: #fef9c3; color: #854d0e; border: 1px solid #fde68a; }
+  .badge-low { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+  .dark .badge-safe { background: #0D2B6B; color: #90CAF9; }
+  .dark .badge-border { background: #451a03; color: #fde68a; }
+  .dark .badge-low { background: #450a0a; color: #fca5a5; }
+  .progress-bar { height: 12px; border-radius: 999px; overflow: hidden; background: #e5e7eb; }
+  .dark .progress-bar { background: #374151; }
+  .progress-fill { height: 100%; border-radius: 999px; transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1); }
+  .tab-btn { padding: 8px 20px; border-radius: 999px; font-weight: 600; font-size: 0.85rem; transition: all 0.2s; cursor: pointer; }
+  .tab-btn.active { background: var(--fgreen); color: white; box-shadow: 0 2px 8px rgba(21,101,192,0.3); }
+  .tab-btn:not(.active) { color: #374151; }
+  .dark .tab-btn:not(.active) { color: #BBDEFB; }
+  .tab-btn:not(.active):hover { background: var(--fblue-faint); color: var(--fgreen); }
+  .input-field {
+    width: 100%; padding: 12px 16px; border: 2px solid #BBDEFB; border-radius: 10px;
+    font-size: 1rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    background: white; color: #111;
+  }
+  .dark .input-field { background: #0D1B4B; color: #e5e7eb; border-color: #1565C0; }
+  .input-field:focus { border-color: var(--fgreen); box-shadow: 0 0 0 3px rgba(21,101,192,0.12); }
+  .input-field.error { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.12); }
+  .btn-primary {
+    background: linear-gradient(135deg, #1565C0, #1976D2); color: white;
+    padding: 12px 28px; border-radius: 10px; font-weight: 700; font-size: 1rem;
+    border: none; cursor: pointer; transition: all 0.2s; letter-spacing: 0.02em;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(21,101,192,0.35); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-secondary {
+    background: transparent; color: var(--fgreen); border: 2px solid var(--fgreen);
+    padding: 10px 24px; border-radius: 10px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--fblue-faint); }
+  .dark .btn-secondary { color: #90CAF9; border-color: #90CAF9; }
+  .dark .btn-secondary:hover { background: #0D2B6B; }
+  .select-field {
+    width: 100%; padding: 10px 14px; border: 2px solid #BBDEFB; border-radius: 10px;
+    font-size: 0.95rem; outline: none; transition: border-color 0.2s; cursor: pointer;
+    background: white; color: #111; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23006400' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+    padding-right: 40px;
+  }
+  .dark .select-field { background-color: #0D1B4B; color: #e5e7eb; border-color: #1565C0; }
+  .select-field:focus { border-color: var(--fgreen); box-shadow: 0 0 0 3px rgba(21,101,192,0.12); }
+  .alternatives-panel { background: #EFF6FF; border: 1px solid #90CAF9; border-radius: 8px; padding: 10px 14px; margin-top: 6px; font-size: 0.82rem; }
+  .dark .alternatives-panel { background: #0D2B6B; border-color: #1565C0; }
+  .tooltip { position: relative; }
+  .tooltip:hover::after {
+    content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+    background: #1f2937; color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem;
+    white-space: nowrap; z-index: 50; pointer-events: none;
+  }
+  .section-hidden { display: none; }
+  .section-visible { display: block; animation: fadeIn 0.3s ease-out; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100;
+    display: flex; align-items: center; justify-content: center; padding: 16px;
+  }
+  .modal-box {
+    background: white; border-radius: 20px; max-width: 480px; width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: bounceIn 0.4s ease-out;
+  }
+  .dark .modal-box { background: #0D1B4B; }
+  @keyframes bounceIn {
+    0% { transform: scale(0.85); opacity: 0; }
+    60% { transform: scale(1.03); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  #toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: #1565C0; color: white; padding: 12px 24px; border-radius: 999px;
+    font-weight: 600; font-size: 0.9rem; z-index: 200; transition: transform 0.3s ease;
+    box-shadow: 0 4px 16px rgba(21,101,192,0.4);
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+  .dark body { background: #071B52; }
+  .shimmer {
+    background: linear-gradient(90deg, #E3F2FD 25%, #BBDEFB 50%, #E3F2FD 75%);
+    background-size: 200% 100%; animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+  .school-chip {
+    display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 0.75rem;
+    font-weight: 700; cursor: pointer; transition: all 0.15s; user-select: none;
+    border: 2px solid transparent;
+  }
+  .school-chip.active { background: var(--fgreen); color: white; border-color: var(--fgreen); }
+  .school-chip:not(.active) { background: #f3f4f6; color: #374151; border-color: #e5e7eb; }
+  .school-chip:not(.active):hover { border-color: var(--fgreen); color: var(--fgreen); }
+  .dark .school-chip:not(.active) { background: #0D1B4B; color: #9ca3af; border-color: #374151; }
+  .dark .school-chip:not(.active):hover { border-color: #90CAF9; color: #90CAF9; }
+  #qrcode-container canvas, #qrcode-container img { border-radius: 8px; }
+  .history-card { border: 1px solid #BBDEFB; border-radius: 12px; padding: 14px; transition: all 0.2s; }
+  .dark .history-card { border-color: #1565C0; }
+  .history-card:hover { box-shadow: 0 4px 16px rgba(21,101,192,0.1); }
+  .cut-bar-wrap { height: 6px; background: #e5e7eb; border-radius: 999px; overflow: hidden; }
+  .dark .cut-bar-wrap { background: #374151; }
+
+  /* ===== ENHANCED ANIMATIONS ===== */
+  /* Ripple effect on buttons */
+  .btn-primary, .btn-secondary {
+    position: relative; overflow: hidden;
+  }
+  .btn-primary::after, .btn-secondary::after {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(255,255,255,0); transition: background 0.3s;
+  }
+  .btn-primary:active::after, .btn-secondary:active::after {
+    background: rgba(255,255,255,0.18);
+  }
+
+  /* Smooth page-load stagger for cards */
+  .card { animation: cardReveal 0.5s ease-out both; }
+  @keyframes cardReveal {
+    from { opacity: 0; transform: translateY(18px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Section transition */
+  .section-visible { animation: sectionIn 0.35s cubic-bezier(0.22,1,0.36,1) both; }
+  @keyframes sectionIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Tab button hover glow */
+  .tab-btn { position: relative; }
+  .tab-btn.active::after {
+    content: ''; position: absolute; inset: -2px; border-radius: 999px;
+    box-shadow: 0 0 0 2px rgba(21,101,192,0.25);
+    animation: tabGlow 2s ease-in-out infinite;
+  }
+  @keyframes tabGlow {
+    0%,100% { box-shadow: 0 0 0 2px rgba(21,101,192,0.2); }
+    50%      { box-shadow: 0 0 0 4px rgba(21,101,192,0.08); }
+  }
+
+  /* Score counter animation */
+  #total-score { transition: all 0.6s cubic-bezier(0.34,1.56,0.64,1); }
+
+  /* Input focus ring */
+  .input-field { transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease; }
+  .input-field:focus { transform: scale(1.005); }
+
+  /* Dept row */
+  .dept-row { transition: all 0.18s cubic-bezier(0.4,0,0.2,1); }
+  .dept-row:hover { transform: translateX(4px); }
+
+  /* Hero text entrance */
+  .hero-bg h1 { animation: heroTitle 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both; }
+  .hero-bg p  { animation: heroTitle 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s both; }
+  .hero-bg .flex.flex-wrap { animation: heroTitle 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both; }
+  .hero-bg button { animation: heroTitle 0.7s cubic-bezier(0.22,1,0.36,1) 0.4s both; }
+  .hero-bg .grid  { animation: heroTitle 0.7s cubic-bezier(0.22,1,0.36,1) 0.5s both; }
+  @keyframes heroTitle {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Navbar entrance */
+  nav { animation: navDrop 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+  @keyframes navDrop {
+    from { opacity: 0; transform: translateY(-100%); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Progress bar fill animation */
+  .progress-fill { transition: width 0.9s cubic-bezier(0.34,1.2,0.64,1); }
+
+  /* Toast slide */
+  #toast { transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.35s ease; }
+  #toast.show { transform: translateX(-50%) translateY(0) !important; }
+
+  /* Result card bounce */
+  #result-card.animate-slide-up { animation: resultBounce 0.5s cubic-bezier(0.34,1.3,0.64,1) both; }
+  @keyframes resultBounce {
+    from { opacity: 0; transform: scale(0.92) translateY(20px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  /* School chip hover */
+  .school-chip { transition: all 0.18s cubic-bezier(0.4,0,0.2,1); }
+  .school-chip:hover { transform: translateY(-1px); }
+
+  /* History card */
+  .history-card { transition: all 0.2s cubic-bezier(0.4,0,0.2,1); }
+  .history-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(21,101,192,0.12); }
+
+  /* Suggestion cards */
+  #suggestion-list > div { transition: all 0.2s ease; }
+  #suggestion-list > div:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(21,101,192,0.14); }
+
+  /* Floating orbs */
+  .hero-orb { animation: orbFloat 6s ease-in-out infinite alternate; }
+  .hero-orb:nth-child(2) { animation-delay: -3s; }
+  @keyframes orbFloat {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(8px, -12px) scale(1.06); }
+  }
+
+  /* General link hover */
+  a { transition: color 0.15s ease; }
+
+  /* Select field */
+  .select-field { transition: border-color 0.25s ease, box-shadow 0.25s ease; }
+</style>
+</head>
+<body class="bg-gray-50 dark:bg-[#071B52] transition-colors duration-300 min-h-screen">
+
+<!-- DISCLAIMER MODAL -->
+<div id="disclaimer-modal" class="modal-overlay">
+  <div class="modal-box p-6 md:p-8">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="text-blue-600"><svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+      <h2 class="text-xl font-bold text-[#1565C0] dark:text-blue-400 font-display">Important Notice</h2>
+    </div>
+    <p class="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-3">
+      This calculator provides <strong>estimated aggregate scores</strong> based on the FUTA 75:25 screening formula. Results are for guidance purposes only.
+    </p>
+    <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1.5 mb-5">
+      <li class="flex gap-2"><svg class="w-4 h-4 mt-0.5 flex-shrink-0 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> <span>Departmental cutoffs are based on <strong>2025/2026</strong> screening data and may vary for 2025/2026</span></li>
+      <li class="flex gap-2"><svg class="w-4 h-4 mt-0.5 flex-shrink-0 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> <span>Official results are published exclusively on the <strong>FUTA portal</strong></span></li>
+      <li class="flex gap-2"><svg class="w-4 h-4 mt-0.5 flex-shrink-0 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> <span>Always verify with FUTA Admissions Office at <a href="https://www.futa.edu.ng" target="_blank" class="text-[#1565C0] dark:text-blue-400 underline font-semibold">futa.edu.ng</a></li>
+      <li class="flex gap-2"><svg class="w-4 h-4 mt-0.5 flex-shrink-0 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> <span>Marked departments (★) have estimated cutoffs — treat with extra caution</span></li>
+    </ul>
+    <button onclick="closeDisclaimer()" class="btn-primary w-full text-center">
+      I Understand – Let Me Calculate! <svg class="w-4 h-4 inline-block ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div id="toast">Copied to clipboard!</div>
+
+<!-- ========== NAVBAR ========== -->
+<nav class="sticky top-0 z-50 bg-[#1565C0] dark:bg-[#0A2472] shadow-lg">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-[#F4A261] flex items-center justify-center font-display font-black text-[#1565C0] text-sm shadow">FU</div>
+      <div>
+        <div class="text-white font-display font-bold text-sm leading-tight">FUTA Aggregate Calculator</div>
+        <div class="text-blue-200 text-xs">2025/2026 Academic Session</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <!-- Dark mode toggle -->
+      <button id="dark-toggle" onclick="toggleDark()" class="w-9 h-9 rounded-full bg-[#0D47A1] hover:bg-[#0D3B8E] text-yellow-300 flex items-center justify-center transition-colors" title="Toggle dark mode">
+        <span id="dark-icon"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+      </button>
+      <button onclick="openDisclaimer()" class="hidden sm:flex items-center gap-1.5 bg-[#F4A261] hover:bg-[#e07a3a] text-[#1565C0] font-bold text-xs px-3 py-2 rounded-full transition-colors">
+        <svg class="w-3.5 h-3.5 inline-block mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Disclaimer
+      </button>
+    </div>
+  </div>
+  <!-- Tab nav -->
+  <div class="max-w-6xl mx-auto px-4 pb-2 flex gap-1 overflow-x-auto scrollbar-hide">
+    <button class="tab-btn active whitespace-nowrap text-white" id="tab-calc" onclick="showSection('calculator')"><svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg> Calculator</button>
+    <button class="tab-btn whitespace-nowrap" id="tab-depts" onclick="showSection('departments')"><svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Departments</button>
+    <button class="tab-btn whitespace-nowrap" id="tab-guide" onclick="showSection('guide')"><svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Formula Guide</button>
+    <button class="tab-btn whitespace-nowrap" id="tab-history" onclick="showSection('history')"><svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="12 8 12 12 14 14"/><path d="M3.05 11a9 9 0 1 0 .5-4.5"/><polyline points="3 4 3 11 10 11"/></svg> History</button>
+  </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section class="hero-bg py-12 md:py-16 px-4 relative">
+  <div class="hero-orb w-64 h-64 top-[-50px] right-[-50px]"></div>
+  <div class="hero-orb w-40 h-40 bottom-[-30px] left-[-20px]"></div>
+  <div class="max-w-4xl mx-auto text-center relative z-10">
+    <!-- FUTA Logo text -->
+    <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-5 py-2 mb-6 border border-white/20">
+      <div class="w-7 h-7 rounded-full bg-[#F4A261] flex items-center justify-center font-black text-[#1565C0] text-xs">FU</div>
+      <span class="text-white text-sm font-semibold tracking-wide">Federal University of Technology, Akure</span>
+    </div>
+    <h1 class="text-3xl md:text-5xl font-display font-black text-white leading-tight mb-3">
+      FUTA Aggregate Calculator
+      <span class="text-[#F4A261]"> 2025/2026</span>
+    </h1>
+    <p class="text-blue-100 text-base md:text-lg mb-3 max-w-2xl mx-auto">
+      Calculate your screening score using the official <strong class="text-[#F4A261]">75:25 formula</strong> — JAMB contributes 75% and O'Level contributes 25% of your total aggregate.
+    </p>
+    <div class="flex flex-wrap justify-center gap-3 mb-8">
+      <div class="bg-white/15 backdrop-blur-sm rounded-full px-4 py-2 text-white text-sm border border-white/20">
+        <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> JAMB Score ÷ 400 × 75
+      </div>
+      <div class="bg-white/15 backdrop-blur-sm rounded-full px-4 py-2 text-white text-sm border border-white/20">
+        <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> O'Level ÷ 100 × 25
+      </div>
+      <div class="bg-[#F4A261]/20 backdrop-blur-sm rounded-full px-4 py-2 text-[#F4A261] text-sm border border-[#F4A261]/30 font-bold">
+        <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Total = Both Added
+      </div>
+    </div>
+    <button onclick="showSection('calculator'); document.getElementById('jamb-score').focus();" class="inline-flex items-center gap-2 bg-[#F4A261] hover:bg-[#e07a3a] text-[#0D47A1] font-black text-lg px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-105">
+      <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg> Calculate My Score
+    </button>
+    <!-- WhatsApp Group CTA -->
+    <div class="mt-4">
+      <a href="https://chat.whatsapp.com/HDGXEv5cjsS0eFxH4T8xl9?mode=gi_t" target="_blank" rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1da851] text-white font-bold text-base px-7 py-3.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
+        <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.025.507 3.934 1.395 5.604L0 24l6.583-1.376A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.804a9.77 9.77 0 01-5.031-1.392l-.361-.214-3.741.982.999-3.648-.235-.374A9.761 9.761 0 012.196 12C2.196 6.577 6.577 2.196 12 2.196S21.804 6.577 21.804 12 17.423 21.804 12 21.804z"/></svg>
+        Join FUTA Aspirants WhatsApp Group
+      </a>
+    </div>
+    <!-- Stats bar -->
+    <div class="grid grid-cols-3 gap-4 mt-10 max-w-sm mx-auto">
+      <div class="text-center">
+        <div class="text-2xl font-black text-[#F4A261]">56+</div>
+        <div class="text-blue-200 text-xs">Departments</div>
+      </div>
+      <div class="text-center border-x border-white/20">
+        <div class="text-2xl font-black text-[#F4A261]">11</div>
+        <div class="text-blue-200 text-xs">Schools</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-black text-[#F4A261]">75:25</div>
+        <div class="text-blue-200 text-xs">Formula</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== MAIN CONTENT ========== -->
+<main class="max-w-6xl mx-auto px-4 py-8">
+
+  <!-- ===== CALCULATOR SECTION ===== -->
+  <section id="section-calculator" class="section-visible">
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Input Card -->
+      <div class="card p-6 dark:text-gray-100">
+        <div class="flex items-center gap-2 mb-5">
+          <span class="w-8 h-8 rounded-full bg-[#1565C0] text-white flex items-center justify-center text-sm font-bold">1</span>
+          <h2 class="text-xl font-display font-bold text-[#1565C0] dark:text-blue-400">Enter Your Scores</h2>
+        </div>
+
+        <!-- JAMB Score -->
+        <div class="mb-5">
+          <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1.5">
+            JAMB/UTME Score <span class="text-red-500">*</span>
+            <span class="font-normal text-gray-500 dark:text-gray-400">(0 – 400)</span>
+          </label>
+          <input type="number" id="jamb-score" class="input-field" placeholder="e.g. 280" min="0" max="400"
+            oninput="validateJamb(this); calculateRealtime()">
+          <div id="jamb-error" class="hidden text-red-500 text-xs mt-1"><svg class="w-3.5 h-3.5 inline-block mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> JAMB score must be between 0 and 400</div>
+          <div id="jamb-preview" class="hidden mt-1.5 text-sm text-[#1565C0] dark:text-blue-400 font-semibold"></div>
+        </div>
+
+        <!-- O'Level Grades -->
+        <div class="mb-5">
+          <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">
+            O'Level Grades <span class="text-red-500">*</span>
+            <span class="font-normal text-gray-500 dark:text-gray-400">(Best 5 subjects)</span>
+          </label>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Include English & Mathematics. Select your grades in relevant subjects.</p>
+          <div class="grid grid-cols-1 gap-2" id="grade-selectors">
+            <!-- Grade selects injected by JS -->
+          </div>
+          <div id="olevel-preview" class="hidden mt-2 text-sm text-[#1565C0] dark:text-blue-400 font-semibold"></div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex gap-3 mt-6">
+          <button onclick="calculate()" class="btn-primary flex-1 flex items-center justify-center gap-2">
+            <svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg> Calculate
+          </button>
+          <button onclick="resetForm()" class="btn-secondary px-4">
+            <svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5"/></svg> Reset
+          </button>
+        </div>
+        <button onclick="saveResult()" id="save-btn" class="hidden mt-3 w-full text-center py-2.5 rounded-10 text-sm font-semibold text-[#1565C0] dark:text-blue-400 bg-[#E3F2FD] dark:bg-[#0D2B6B] hover:bg-blue-100 transition-colors border border-blue-200 dark:border-blue-800">
+          <svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save This Result
+        </button>
+      </div>
+
+      <!-- Result Card -->
+      <div id="result-card" class="card p-6 dark:text-gray-100 hidden animate-slide-up">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <span class="w-8 h-8 rounded-full bg-[#F4A261] text-white flex items-center justify-center text-sm font-bold">2</span>
+            <h2 class="text-xl font-display font-bold text-[#1565C0] dark:text-blue-400">Your Result</h2>
+          </div>
+          <span id="result-emoji" class="text-2xl"></span>
+        </div>
+
+        <!-- Big score display -->
+        <div class="text-center py-4 mb-4 bg-gradient-to-br from-[#1565C0] to-[#1976D2] rounded-2xl text-white relative overflow-hidden">
+          <div class="text-xs font-semibold text-blue-200 mb-1 uppercase tracking-wider">Total Aggregate Score</div>
+          <div id="total-score" class="text-5xl font-black font-display leading-none mb-1">--</div>
+          <div class="text-blue-200 text-xs">out of 100</div>
+          <!-- Decorative -->
+          <div class="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-bl-full"></div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="mb-4">
+          <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1.5">
+            <span>0</span>
+            <span id="score-label" class="font-semibold"></span>
+            <span>100</span>
+          </div>
+          <div class="progress-bar">
+            <div id="score-bar" class="progress-fill bg-[#1565C0]" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- Breakdown -->
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div class="bg-[#E3F2FD] dark:bg-[#0D2B6B] rounded-xl p-3 text-center border border-blue-200 dark:border-blue-900">
+            <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">JAMB (75%)</div>
+            <div id="jamb-contribution" class="text-2xl font-black text-[#1565C0] dark:text-blue-400">--</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">/ 75.00</div>
+          </div>
+          <div class="bg-[#fef3e8] dark:bg-[#2c1a00] rounded-xl p-3 text-center border border-orange-200 dark:border-orange-900">
+            <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">O'Level (25%)</div>
+            <div id="olevel-contribution" class="text-2xl font-black text-[#F4A261]">--</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">/ 25.00</div>
+          </div>
+        </div>
+
+        <!-- Breakdown details -->
+        <div id="breakdown-details" class="text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/40 rounded-xl p-3 mb-4 leading-relaxed"></div>
+
+        <!-- Quick dept check button -->
+        <button onclick="showSection('departments')" class="w-full btn-primary flex items-center justify-center gap-2 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Check Department Cutoffs
+        </button>
+
+        <!-- Share mini buttons -->
+        <div class="flex gap-2 mt-3">
+          <button onclick="shareWhatsApp()" class="flex-1 py-2 rounded-lg bg-[#25D366] hover:bg-[#1da851] text-white text-xs font-bold transition-colors flex items-center justify-center gap-1">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.025.507 3.934 1.395 5.604L0 24l6.583-1.376A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.804a9.77 9.77 0 01-5.031-1.392l-.361-.214-3.741.982.999-3.648-.235-.374A9.761 9.761 0 012.196 12C2.196 6.577 6.577 2.196 12 2.196S21.804 6.577 21.804 12 17.423 21.804 12 21.804z"/></svg>
+            WhatsApp
+          </button>
+          <button onclick="shareTwitter()" class="flex-1 py-2 rounded-lg bg-[#1da1f2] hover:bg-[#1a8fd1] text-white text-xs font-bold transition-colors flex items-center justify-center gap-1">
+            𝕏 Twitter
+          </button>
+          <button onclick="copyResult()" class="flex-1 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white text-xs font-bold transition-colors flex items-center justify-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy
+          </button>
+        </div>
+      </div>
+
+      <!-- Placeholder when no result -->
+      <div id="no-result-placeholder" class="card p-6 dark:text-gray-300 flex flex-col items-center justify-center text-center">
+        <div class="mb-4 text-blue-300 opacity-40 flex justify-center"><svg class="w-16 h-16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <h3 class="font-bold text-gray-400 dark:text-gray-500 text-lg mb-2">Your Score Appears Here</h3>
+        <p class="text-sm text-gray-400 dark:text-gray-500">Enter your JAMB score and select your O'Level grades, then click <strong>Calculate</strong>.</p>
+        <div class="mt-4 text-xs text-gray-400 dark:text-gray-500 space-y-1">
+          <div class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> JAMB: 0 – 400</div>
+          <div class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> O'Level: 5 subject grades</div>
+          <div class="flex items-center gap-1"><svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Formula: 75:25 ratio</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Share Section (appears after calculation) -->
+    <div id="share-section" class="card p-6 mt-6 dark:text-gray-100 hidden">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-blue-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
+        <h3 class="font-display font-bold text-[#1565C0] dark:text-blue-400 text-lg">Share Your Result</h3>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Share a unique link that shows your exact calculation:</p>
+          <div class="flex gap-2 mb-3">
+            <input id="share-url" type="text" class="input-field text-xs" readonly placeholder="Calculate first to generate link">
+            <button onclick="copyShareUrl()" class="btn-primary px-4 text-sm whitespace-nowrap"><svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="shareWhatsApp()" class="py-2.5 rounded-xl bg-[#25D366] hover:bg-[#1da851] text-white text-xs font-bold transition-all hover:scale-105 shadow">
+              <svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.79-1.79a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg> WhatsApp
+            </button>
+            <button onclick="shareTwitter()" class="py-2.5 rounded-xl bg-[#1da1f2] hover:bg-[#1a8fd1] text-white text-xs font-bold transition-all hover:scale-105 shadow">
+              𝕏 Twitter
+            </button>
+            <button onclick="shareFacebook()" class="py-2.5 rounded-xl bg-[#1877F2] hover:bg-[#1564d0] text-white text-xs font-bold transition-all hover:scale-105 shadow">
+              <svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg> Facebook
+            </button>
+          </div>
+        </div>
+        <!-- QR Code -->
+        <div class="flex flex-col items-center">
+          <div class="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2"><svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Scan to share</div>
+          <div id="qrcode-container" class="bg-white p-2 rounded-xl shadow border border-blue-100">
+            <div id="qrcode"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DEPARTMENTS SECTION ===== -->
+  <section id="section-departments" class="section-hidden">
+    <div class="card p-6 dark:text-gray-100">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
+        <div>
+          <h2 class="text-xl font-display font-bold text-[#1565C0] dark:text-blue-400">Departmental Cutoff Comparison</h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+            <span id="dept-score-label">Calculate your score first</span> to see your chances per department.
+          </p>
+        </div>
+        <div class="flex items-center gap-2 text-sm">
+          <span class="badge-safe rounded-full px-2 py-0.5 text-xs font-bold"><svg class="w-3 h-3 inline-block mr-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Safe</span>
+          <span class="badge-border rounded-full px-2 py-0.5 text-xs font-bold"><svg class="w-3 h-3 inline-block mr-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Borderline</span>
+          <span class="badge-low rounded-full px-2 py-0.5 text-xs font-bold"><svg class="w-3 h-3 inline-block mr-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Low</span>
+        </div>
+      </div>
+
+      <!-- Search & Filter -->
+      <div class="flex flex-col sm:flex-row gap-3 mb-4">
+        <input type="text" id="dept-search" class="input-field text-sm" placeholder="Search department or code..."
+          oninput="filterDepts()">
+        <select id="sort-select" class="select-field text-sm w-full sm:w-48" onchange="filterDepts()">
+          <option value="school">Sort by School</option>
+          <option value="name">Sort by Name</option>
+          <option value="cutoff-asc">Cutoff: Low → High</option>
+          <option value="cutoff-desc">Cutoff: High → Low</option>
+          <option value="status">Sort by Status</option>
+        </select>
+      </div>
+
+      <!-- School Filter Chips -->
+      <div class="flex flex-wrap gap-2 mb-5" id="school-chips">
+        <!-- Injected by JS -->
+      </div>
+
+      <!-- Department Table -->
+      <div id="dept-table" class="space-y-1">
+        <!-- Injected by JS -->
+      </div>
+      <p id="no-dept-results" class="hidden text-center text-gray-400 dark:text-gray-500 py-8">
+        No departments match your search.
+      </p>
+    </div>
+
+    <!-- Suggestion Panel -->
+    <div id="suggestion-panel" class="card p-6 mt-6 dark:text-gray-100 hidden">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="text-yellow-400"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg></span>
+        <h3 class="font-display font-bold text-[#1565C0] dark:text-blue-400 text-lg">Departments You Can Likely Enter</h3>
+      </div>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Based on your aggregate score of <span id="suggest-score" class="font-bold text-[#1565C0] dark:text-blue-400"></span>, you are likely eligible for:</p>
+      <div id="suggestion-list" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+    </div>
+  </section>
+
+  <!-- ===== GUIDE SECTION ===== -->
+  <section id="section-guide" class="section-hidden">
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Formula Explanation -->
+      <div class="card p-6 dark:text-gray-100">
+        <h2 class="text-xl font-display font-bold text-[#1565C0] dark:text-blue-400 mb-4"><svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 3L3 21"/><path d="M8.5 8.5L11 11"/><path d="M11 5l3 3"/><path d="M5 11l3 3"/><path d="M14 14l3 3"/></svg> The 75:25 Formula Explained</h2>
+        <div class="space-y-4">
+          <div class="bg-[#E3F2FD] dark:bg-[#0D2B6B] rounded-xl p-4 border-l-4 border-[#1565C0]">
+            <h4 class="font-bold text-[#1565C0] dark:text-blue-400 text-sm mb-2">Step 1: JAMB Component (75%)</h4>
+            <div class="font-mono text-sm bg-white dark:bg-gray-800 rounded-lg p-3 text-gray-700 dark:text-gray-300 mb-2">
+              JAMB Points = (JAMB Score ÷ 400) × 75
+            </div>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Your UTME score is scaled to 75 points. A score of 400 gives a perfect 75.00.</p>
+          </div>
+          <div class="bg-[#fef3e8] dark:bg-[#2c1a00] rounded-xl p-4 border-l-4 border-[#F4A261]">
+            <h4 class="font-bold text-[#F4A261] text-sm mb-2">Step 2: O'Level Component (25%)</h4>
+            <div class="font-mono text-sm bg-white dark:bg-gray-800 rounded-lg p-3 text-gray-700 dark:text-gray-300 mb-2">
+              O'Level Points = (Sum of 5 Grades ÷ 5 ÷ 100) × 25
+            </div>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Grade values: A1=80, B2=72, B3=67, C4=62, C5=57, C6=52. Average is taken, then scaled to 25 points.</p>
+          </div>
+          <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 border-l-4 border-gray-400">
+            <h4 class="font-bold text-gray-700 dark:text-gray-300 text-sm mb-2">Step 3: Final Aggregate</h4>
+            <div class="font-mono text-sm bg-white dark:bg-gray-700 rounded-lg p-3 text-gray-700 dark:text-gray-300 mb-2">
+              Aggregate = JAMB Points + O'Level Points
+            </div>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Maximum possible aggregate = 75.00 + 25.00 = <strong>100.00</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example -->
+      <div class="card p-6 dark:text-gray-100">
+        <h2 class="text-xl font-display font-bold text-[#1565C0] dark:text-blue-400 mb-4"><svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Worked Example</h2>
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 mb-4">
+          <div class="text-sm font-bold text-gray-700 dark:text-gray-200 mb-3">Given:</div>
+          <div class="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+            <div class="flex justify-between"><span>JAMB Score:</span><strong class="text-[#1565C0] dark:text-blue-400">280</strong></div>
+            <div class="flex justify-between"><span>English Language:</span><strong>A1 (80)</strong></div>
+            <div class="flex justify-between"><span>Mathematics:</span><strong>B2 (72)</strong></div>
+            <div class="flex justify-between"><span>Physics:</span><strong>B3 (67)</strong></div>
+            <div class="flex justify-between"><span>Chemistry:</span><strong>C4 (62)</strong></div>
+            <div class="flex justify-between"><span>Biology:</span><strong>C5 (57)</strong></div>
+          </div>
+        </div>
+        <div class="space-y-3 text-sm">
+          <div class="flex items-start gap-2">
+            <span class="w-5 h-5 rounded-full bg-[#1565C0] text-white flex-shrink-0 flex items-center justify-center text-xs font-bold mt-0.5">1</span>
+            <div>
+              <span class="font-bold text-gray-700 dark:text-gray-300">JAMB:</span>
+              <span class="text-gray-600 dark:text-gray-400 ml-1">(280 ÷ 400) × 75 = 0.7 × 75 = <strong class="text-[#1565C0] dark:text-blue-400">52.50</strong></span>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="w-5 h-5 rounded-full bg-[#F4A261] text-white flex-shrink-0 flex items-center justify-center text-xs font-bold mt-0.5">2</span>
+            <div>
+              <span class="font-bold text-gray-700 dark:text-gray-300">O'Level Sum:</span>
+              <span class="text-gray-600 dark:text-gray-400 ml-1">80+72+67+62+57 = 338</span>
+              <br><span class="text-gray-600 dark:text-gray-400">Average = 338 ÷ 5 = 67.6</span>
+              <br><span class="text-gray-600 dark:text-gray-400">(67.6 ÷ 100) × 25 = <strong class="text-[#F4A261]">16.90</strong></span>
+            </div>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="w-5 h-5 rounded-full bg-gray-700 text-white flex-shrink-0 flex items-center justify-center text-xs font-bold mt-0.5">3</span>
+            <div>
+              <span class="font-bold text-gray-700 dark:text-gray-300">Aggregate:</span>
+              <span class="text-gray-600 dark:text-gray-400 ml-1">52.50 + 16.90 = <strong class="text-2xl text-[#1565C0] dark:text-blue-400 font-black">69.40</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grade Points Table -->
+        <h3 class="font-bold text-gray-700 dark:text-gray-300 text-sm mt-5 mb-2"><svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> O'Level Grade Points</h3>
+        <div class="grid grid-cols-3 gap-1.5 text-center text-xs">
+          <div class="bg-[#E3F2FD] dark:bg-[#0D2B6B] rounded-lg py-2 font-bold text-[#1565C0] dark:text-blue-400">A1 = 80</div>
+          <div class="bg-[#E3F2FD] dark:bg-[#0D2B6B] rounded-lg py-2 font-bold text-[#1565C0] dark:text-blue-400">B2 = 72</div>
+          <div class="bg-[#E3F2FD] dark:bg-[#0D2B6B] rounded-lg py-2 font-bold text-[#1976D2] dark:text-blue-300">B3 = 67</div>
+          <div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg py-2 font-bold text-yellow-700 dark:text-yellow-400">C4 = 62</div>
+          <div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg py-2 font-bold text-yellow-700 dark:text-yellow-400">C5 = 57</div>
+          <div class="bg-orange-50 dark:bg-orange-900/20 rounded-lg py-2 font-bold text-orange-700 dark:text-orange-400">C6 = 52</div>
+        </div>
+      </div>
+
+      <!-- Tips Card -->
+      <div class="card p-6 dark:text-gray-100 md:col-span-2">
+        <h2 class="text-xl font-display font-bold text-[#1565C0] dark:text-blue-400 mb-4"><svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> Admission Tips for FUTA Aspirants</h2>
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="bg-[#E3F2FD] dark:bg-[#0D2B6B] rounded-xl p-4">
+            <div class="mb-2 text-blue-500"><svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+            <h4 class="font-bold text-[#1565C0] dark:text-blue-400 text-sm mb-1">Minimum JAMB Score</h4>
+            <p class="text-xs text-gray-600 dark:text-gray-400">FUTA requires a minimum JAMB score of <strong>180</strong> to qualify for the screening exercise. Aim for 220+ for competitive departments.</p>
+          </div>
+          <div class="bg-[#fef3e8] dark:bg-[#2c1a00] rounded-xl p-4">
+            <div class="mb-2 text-orange-400"><svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+            <h4 class="font-bold text-[#F4A261] text-sm mb-1">O'Level Strategy</h4>
+            <p class="text-xs text-gray-600 dark:text-gray-400">All 5 A1s give a perfect 20/25 O'Level score. Even C6s add meaningful points — don't leave any subject blank.</p>
+          </div>
+          <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+            <div class="mb-2 text-yellow-500"><svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
+            <h4 class="font-bold text-gray-700 dark:text-gray-300 text-sm mb-1">Competitive Departments</h4>
+            <p class="text-xs text-gray-600 dark:text-gray-400">EEE (74.37), MEE (73.75), ARC (72.90), CVE (72.66) and MBBS (78.25) are the most competitive. Plan your combinations wisely.</p>
+          </div>
+          <div class="bg-[#E3F2FD] dark:bg-[#0D2B6B] rounded-xl p-4">
+            <div class="mb-2 text-green-500"><svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>
+            <h4 class="font-bold text-[#1565C0] dark:text-blue-400 text-sm mb-1">Change of Course</h4>
+            <p class="text-xs text-gray-600 dark:text-gray-400">If your aggregate is below your first-choice cutoff, use this calculator to find related departments where your score qualifies.</p>
+          </div>
+          <div class="bg-[#fef3e8] dark:bg-[#2c1a00] rounded-xl p-4">
+            <div class="mb-2 text-blue-400"><svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <h4 class="font-bold text-[#F4A261] text-sm mb-1">Stay Updated</h4>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Cutoff marks change yearly based on applicant performance. Always check <a href="https://www.futa.edu.ng" target="_blank" class="underline text-[#1565C0] dark:text-blue-400">futa.edu.ng</a> for official updates.</p>
+          </div>
+          <!-- WhatsApp Community Card -->
+          <div class="bg-[#f0fdf4] dark:bg-[#052e16] rounded-xl p-4 border border-[#86efac] dark:border-[#166534]">
+            <div class="mb-2 text-[#25D366]"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.025.507 3.934 1.395 5.604L0 24l6.583-1.376A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.804a9.77 9.77 0 01-5.031-1.392l-.361-.214-3.741.982.999-3.648-.235-.374A9.761 9.761 0 012.196 12C2.196 6.577 6.577 2.196 12 2.196S21.804 6.577 21.804 12 17.423 21.804 12 21.804z"/></svg></div>
+            <h4 class="font-bold text-[#15803d] dark:text-green-400 text-sm mb-1">Join Our WhatsApp Group</h4>
+            <p class="text-xs text-gray-600 dark:text-gray-400 mb-2">Connect with fellow FUTA aspirants — share tips, ask questions, and get updates together.</p>
+            <a href="https://chat.whatsapp.com/HDGXEv5cjsS0eFxH4T8xl9?mode=gi_t" target="_blank" rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 bg-[#25D366] hover:bg-[#1da851] text-white text-xs font-bold px-3 py-1.5 rounded-full transition-all hover:scale-105">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.025.507 3.934 1.395 5.604L0 24l6.583-1.376A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.804a9.77 9.77 0 01-5.031-1.392l-.361-.214-3.741.982.999-3.648-.235-.374A9.761 9.761 0 012.196 12C2.196 6.577 6.577 2.196 12 2.196S21.804 6.577 21.804 12 17.423 21.804 12 21.804z"/></svg>
+              Join Now
+            </a>
+          </div>
+          <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+            <div class="mb-2 text-purple-500"><svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+            <h4 class="font-bold text-gray-700 dark:text-gray-300 text-sm mb-1">FUTA Screening</h4>
+            <p class="text-xs text-gray-600 dark:text-gray-400">FUTA conducts a <strong>Screening Exercise</strong> (not Post-UTME). Your JAMB score and O'Level results are used to compute your aggregate for admission.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HISTORY SECTION ===== -->
+  <section id="section-history" class="section-hidden">
+    <div class="card p-6 dark:text-gray-100">
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="text-xl font-display font-bold text-[#1565C0] dark:text-blue-400"><svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="12 8 12 12 14 14"/><path d="M3.05 11a9 9 0 1 0 .5-4.5"/><polyline points="3 4 3 11 10 11"/></svg> Previous Calculations</h2>
+        <button onclick="clearHistory()" class="text-xs text-red-500 hover:text-red-700 font-semibold px-3 py-1 rounded-lg border border-red-200 hover:border-red-400 transition-colors">
+          <svg class="w-3.5 h-3.5 inline-block mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg> Clear All
+        </button>
+      </div>
+      <div id="history-list">
+        <!-- Injected by JS -->
+      </div>
+      <p id="no-history" class="text-center text-gray-400 dark:text-gray-500 py-12 hidden">
+        <span class="block mb-3 flex justify-center"><svg class="w-12 h-12 opacity-40 text-blue-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span>
+        No saved calculations yet. Calculate your score and click <strong>Save</strong>!
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer class="bg-[#0D47A1] dark:bg-[#071B52] mt-12 text-blue-100">
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="grid md:grid-cols-3 gap-6 mb-6">
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <div class="w-8 h-8 rounded-full bg-[#F4A261] flex items-center justify-center font-black text-[#1565C0] text-xs">FU</div>
+          <span class="font-display font-bold">FUTA Aggregate Calculator</span>
+        </div>
+        <p class="text-xs text-blue-300 leading-relaxed">An unofficial tool to help FUTA aspirants estimate their screening aggregate scores using the 75:25 formula.</p>
+      </div>
+      <div>
+        <h4 class="font-bold mb-2 text-[#F4A261]">Quick Links</h4>
+        <div class="space-y-1 text-sm text-blue-300">
+          <a href="https://www.futa.edu.ng" target="_blank" class="block hover:text-white transition-colors"><svg class="w-3.5 h-3.5 inline-block mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> FUTA Official Website</a>
+          <a href="https://www.jamb.gov.ng" target="_blank" class="block hover:text-white transition-colors"><svg class="w-3.5 h-3.5 inline-block mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> JAMB Portal</a>
+          <a href="https://chat.whatsapp.com/HDGXEv5cjsS0eFxH4T8xl9?mode=gi_t" target="_blank" rel="noopener noreferrer" class="block hover:text-white transition-colors text-[#25D366]"><svg class="w-3.5 h-3.5 inline-block mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.025.507 3.934 1.395 5.604L0 24l6.583-1.376A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.804a9.77 9.77 0 01-5.031-1.392l-.361-.214-3.741.982.999-3.648-.235-.374A9.761 9.761 0 012.196 12C2.196 6.577 6.577 2.196 12 2.196S21.804 6.577 21.804 12 17.423 21.804 12 21.804z"/></svg> FUTA Aspirants WhatsApp Group</a>
+          <button onclick="openDisclaimer()" class="block text-left hover:text-white transition-colors"><svg class="w-3.5 h-3.5 inline-block mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Disclaimer</button>
+        </div>
+      </div>
+      <div>
+        <h4 class="font-bold mb-2 text-[#F4A261]">Data Notes</h4>
+        <p class="text-xs text-blue-300 leading-relaxed">Cutoff marks are based on 2025/2026 FUTA screening data. Departments marked with ★ have estimated cutoffs. Verify all figures on the official FUTA portal before making admission decisions.</p>
+      </div>
+    </div>
+    <div class="border-t border-blue-700/50 pt-4 text-center">
+      <p class="text-sm text-blue-300">Made with <span class="text-red-400"><svg class="w-3.5 h-3.5 inline-block fill-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span> for FUTA Aspirants &nbsp;|&nbsp; Data: 2025/2026 Session</p>
+      <p class="text-xs text-blue-500 mt-1">© 2026 FUTA Aggregate Calculator. For educational purposes only.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const GRADES = {
+  'A1': 80, 'B2': 72, 'B3': 67, 'C4': 62, 'C5': 57, 'C6': 52,
+  'D7': 0, 'E8': 0, 'F9': 0
+};
+const GRADE_OPTIONS = ['A1','B2','B3','C4','C5','C6'];
+
+const SCHOOLS = {
+  'SAAT':  'School of Agriculture & Agricultural Technology',
+  'SBMS':  'School of Basic Medical Sciences',
+  'SOC':   'School of Computing',
+  'SEET':  'School of Engineering & Engineering Technology',
+  'SEMS':  'School of Earth & Mineral Sciences',
+  'SET':   'School of Environmental Technology',
+  'SLIT':  'School of Logistics & Innovation Technology',
+  'SLS':   'School of Life Sciences',
+  'SPS':   'School of Physical Sciences',
+};
+
+const DEPARTMENTS = [
+  // ---- SAAT ----
+  { school:'SAAT', name:'Agricultural Extension & Communication Technology', code:'AEC', cutoff:47.81, est:false },
+  { school:'SAAT', name:'Agricultural Resource Economics',                   code:'ARE', cutoff:47.50, est:false },
+  { school:'SAAT', name:'Animal Production & Health',                        code:'APH', cutoff:55.52, est:false },
+  { school:'SAAT', name:'Crop, Soil & Pest Management',                      code:'CSP', cutoff:48.20, est:false },
+  { school:'SAAT', name:'Ecotourism & Wildlife Management',                   code:'EWM', cutoff:47.70, est:false },
+  { school:'SAAT', name:'Fisheries & Aquaculture Technology',                 code:'FAT', cutoff:47.50, est:false },
+  { school:'SAAT', name:'Food Science & Technology',                          code:'FST', cutoff:58.12, est:false },
+  { school:'SAAT', name:'Forestry & Wood Technology',                         code:'FWT', cutoff:47.50, est:false },
+  { school:'SAAT', name:'Nutrition & Dietetics',                              code:'NTD', cutoff:55.70, est:false },
+
+  // ---- SBMS ----
+  { school:'SBMS', name:'Anatomy',                    code:'ANA', cutoff:60.40, est:false },
+  { school:'SBMS', name:'Biomedical Technology',      code:'BIM', cutoff:61.66, est:false },
+  { school:'SBMS', name:'Medical Laboratory Science', code:'MLS', cutoff:67.28, est:false },
+  { school:'SBMS', name:'Medicine & Surgery',         code:'MBBS', cutoff:78.25, est:false },
+  { school:'SBMS', name:'Physiology',                 code:'PHS', cutoff:57.26, est:false },
+
+  // ---- SOC ----
+  { school:'SOC', name:'Computer Science',        code:'CSC', cutoff:69.12, est:false },
+  { school:'SOC', name:'Cyber Security',          code:'CYS', cutoff:63.75, est:false },
+  { school:'SOC', name:'Information Systems',     code:'IFS', cutoff:63.11, est:false },
+  { school:'SOC', name:'Information Technology',  code:'IFT', cutoff:64.23, est:false },
+  { school:'SOC', name:'Software Engineering',    code:'SEN', cutoff:65.38, est:false },
+
+  // ---- SEET ----
+  { school:'SEET', name:'Agricultural Engineering',                   code:'AGE', cutoff:56.21, est:false },
+  { school:'SEET', name:'Biomedical Engineering',                     code:'BME', cutoff:63.40, est:false },
+  { school:'SEET', name:'Chemical Engineering',                       code:'CEE', cutoff:65.21, est:false },
+  { school:'SEET', name:'Civil Engineering',                          code:'CVE', cutoff:72.66, est:false },
+  { school:'SEET', name:'Computer Engineering',                       code:'CPE', cutoff:69.62, est:false },
+  { school:'SEET', name:'Electrical & Electronics Engineering',       code:'EEE', cutoff:74.37, est:false },
+  { school:'SEET', name:'Industrial & Production Engineering',        code:'IPE', cutoff:53.53, est:false },
+  { school:'SEET', name:'Information & Communication Engineering',    code:'ICE', cutoff:54.60, est:false },
+  { school:'SEET', name:'Mechanical Engineering',                     code:'MEE', cutoff:73.75, est:false },
+  { school:'SEET', name:'Mechatronics Engineering',                   code:'MCE', cutoff:71.30, est:false },
+  { school:'SEET', name:'Mining Engineering',                         code:'MNE', cutoff:55.20, est:false },
+  { school:'SEET', name:'Metallurgical Engineering',                  code:'MME', cutoff:55.30, est:false },
+
+  // ---- SEMS ----
+  { school:'SEMS', name:'Applied Geology',              code:'AGY', cutoff:57.30, est:false },
+  { school:'SEMS', name:'Applied Geophysics',           code:'AGP', cutoff:56.66, est:false },
+  { school:'SEMS', name:'Marine Science & Technology',  code:'MST', cutoff:51.44, est:false },
+  { school:'SEMS', name:'Meteorology & Climate Science',code:'MCS', cutoff:51.70, est:false },
+  { school:'SEMS', name:'Remote Sensing & Geoinformatics', code:'RSG', cutoff:51.10, est:false },
+
+  // ---- SET ----
+  { school:'SET', name:'Architecture',                  code:'ARC', cutoff:72.90, est:false },
+  { school:'SET', name:'Building Technology',           code:'BDG', cutoff:57.20, est:false },
+  { school:'SET', name:'Estate Management',             code:'ESM', cutoff:48.30, est:false },
+  { school:'SET', name:'Industrial Design',             code:'IDD', cutoff:53.25, est:false },
+  { school:'SET', name:'Quantity Surveying',            code:'QSV', cutoff:57.60, est:false },
+  { school:'SET', name:'Surveying & Geoinformatics',    code:'SVG', cutoff:64.25, est:false },
+  { school:'SET', name:'Textile Design Technology',     code:'TDT', cutoff:52.87, est:false },
+  { school:'SET', name:'Urban & Regional Planning',     code:'URP', cutoff:52.90, est:false },
+
+  // ---- SLIT ----
+  { school:'SLIT', name:'Business Information Technology',          code:'BIT', cutoff:null, est:false },
+  { school:'SLIT', name:'Business Management Technology',           code:'BMT', cutoff:null, est:false },
+  { school:'SLIT', name:'Entrepreneurship Management Technology',   code:'ENT', cutoff:51.66, est:false },
+  { school:'SLIT', name:'Logistics & Transport Technology',         code:'LTT', cutoff:55.60, est:false },
+  { school:'SLIT', name:'Project Management Technology',            code:'PMT', cutoff:56.40, est:false },
+  { school:'SLIT', name:'Security & Investment Management Technology', code:'SIMT', cutoff:49.50, est:false },
+
+  // ---- SLS ----
+  { school:'SLS', name:'Biochemistry',  code:'BCH', cutoff:64.33, est:false },
+  { school:'SLS', name:'Biology',       code:'BIO', cutoff:52.62, est:false },
+  { school:'SLS', name:'Biotechnology', code:'BTH', cutoff:58.43, est:false },
+  { school:'SLS', name:'Microbiology',  code:'MCB', cutoff:64.30, est:false },
+
+  // ---- SPS ----
+  { school:'SPS', name:'Chemistry',                  code:'CHM', cutoff:55.30, est:false },
+  { school:'SPS', name:'Education Technology',       code:'EDT', cutoff:48.72, est:false },
+  { school:'SPS', name:'Library & Information Science', code:'LIS', cutoff:48.90, est:false },
+  { school:'SPS', name:'Mathematics',                code:'MTS', cutoff:59.64, est:false },
+  { school:'SPS', name:'Physics (Electronics)',      code:'PHY', cutoff:50.70, est:false },
+  { school:'SPS', name:'Physics (Energy)',           code:'PHYE', cutoff:50.70, est:false },
+  { school:'SPS', name:'Statistics',                 code:'STA', cutoff:50.00, est:false },
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let currentScore = null;
+let currentJAMB = null;
+let currentOLevel = null;
+let currentGrades = [];
+let activeSchool = 'ALL';
+let isDark = false;
+let qrInstance = null;
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  buildGradeSelectors();
+  buildSchoolChips();
+  renderDeptTable(DEPARTMENTS);
+  loadTheme();
+  readURLParams();
+  renderHistory();
+  showSection('calculator');
+});
+
+// ============================================================
+// GRADE SELECTORS
+// ============================================================
+const SUBJECT_LABELS = ['Subject 1 (e.g. English)', 'Subject 2 (e.g. Maths)', 'Subject 3', 'Subject 4', 'Subject 5'];
+function buildGradeSelectors() {
+  const container = document.getElementById('grade-selectors');
+  container.innerHTML = '';
+  SUBJECT_LABELS.forEach((label, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'flex items-center gap-2';
+    wrap.innerHTML = `
+      <label class="text-xs text-gray-500 dark:text-gray-400 w-36 flex-shrink-0">${label}</label>
+      <select id="grade-${i}" class="select-field text-sm" onchange="calculateRealtime()">
+        <option value="">-- Grade --</option>
+        ${GRADE_OPTIONS.map(g => `<option value="${g}">${g} (${GRADES[g]} pts)</option>`).join('')}
+      </select>
+    `;
+    container.appendChild(wrap);
+  });
+}
+
+// ============================================================
+// VALIDATION
+// ============================================================
+function validateJamb(el) {
+  const v = parseFloat(el.value);
+  const err = document.getElementById('jamb-error');
+  if (el.value !== '' && (isNaN(v) || v < 0 || v > 400)) {
+    el.classList.add('error');
+    err.classList.remove('hidden');
+    return false;
+  }
+  el.classList.remove('error');
+  err.classList.add('hidden');
+  return true;
+}
+
+// ============================================================
+// CALCULATION
+// ============================================================
+function getInputs() {
+  const jamb = parseFloat(document.getElementById('jamb-score').value);
+  const grades = [];
+  for (let i = 0; i < 5; i++) {
+    const sel = document.getElementById(`grade-${i}`);
+    if (sel && sel.value) grades.push(sel.value);
+  }
+  return { jamb, grades };
+}
+
+function computeScore(jamb, grades) {
+  const jambPts = (jamb / 400) * 75;
+  const sum = grades.reduce((a, g) => a + (GRADES[g] || 0), 0);
+  const avg = sum / grades.length;
+  const oLevelPts = (avg / 100) * 25;
+  const total = jambPts + oLevelPts;
+  return { jambPts, oLevelPts, total, sum, avg };
+}
+
+function calculateRealtime() {
+  const { jamb, grades } = getInputs();
+  if (!isNaN(jamb) && jamb >= 0 && jamb <= 400) {
+    const jPts = (jamb / 400) * 75;
+    document.getElementById('jamb-preview').textContent = `→ JAMB contribution: ${jPts.toFixed(2)} / 75`;
+    document.getElementById('jamb-preview').classList.remove('hidden');
+  }
+  if (grades.length === 5) {
+    const { oLevelPts } = computeScore(0, grades);
+    document.getElementById('olevel-preview').textContent = `→ O'Level contribution: ${oLevelPts.toFixed(2)} / 25`;
+    document.getElementById('olevel-preview').classList.remove('hidden');
+  }
+}
+
+function calculate() {
+  const { jamb, grades } = getInputs();
+  if (isNaN(jamb) || jamb < 0 || jamb > 400) {
+    showToast('Please enter a valid JAMB score (0–400)', 'red');
+    document.getElementById('jamb-score').focus();
+    document.getElementById('jamb-score').classList.add('error');
+    return;
+  }
+  if (grades.length < 5) {
+    showToast('Please select all 5 O\'Level grades', 'red');
+    return;
+  }
+
+  const res = computeScore(jamb, grades);
+  currentScore = res.total;
+  currentJAMB = jamb;
+  currentOLevel = grades;
+  currentGrades = grades;
+
+  displayResult(res, grades, jamb);
+  updateURLParams();
+  updateDeptScoreLabel();
+  document.getElementById('save-btn').classList.remove('hidden');
+}
+
+function displayResult(res, grades, jamb) {
+  const { jambPts, oLevelPts, total, sum, avg } = res;
+
+  // Show result card
+  document.getElementById('result-card').classList.remove('hidden');
+  document.getElementById('result-card').classList.add('animate-bounce-in');
+  document.getElementById('no-result-placeholder').classList.add('hidden');
+
+  document.getElementById('total-score').textContent = total.toFixed(2);
+  document.getElementById('jamb-contribution').textContent = jambPts.toFixed(2);
+  document.getElementById('olevel-contribution').textContent = oLevelPts.toFixed(2);
+
+  // Progress bar
+  const pct = Math.min(100, total);
+  document.getElementById('score-bar').style.width = pct + '%';
+  let barColor = total >= 70 ? '#1565C0' : total >= 60 ? '#F4A261' : '#ef4444';
+  document.getElementById('score-bar').style.background = barColor;
+
+  let emoji = ''; // icons handled via CSS class now
+  let label = total >= 75 ? 'Excellent! Top Scorer!' : total >= 65 ? 'Very Good!' : total >= 55 ? 'Good Score' : total >= 47 ? 'Fair Score' : 'Keep Trying';
+  // Set result icon based on score
+  const resultIconEl = document.getElementById('result-emoji');
+  if (total >= 75) {
+    resultIconEl.innerHTML = '<svg class="w-7 h-7 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>';
+  } else if (total >= 65) {
+    resultIconEl.innerHTML = '<svg class="w-7 h-7 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>';
+  } else if (total >= 47) {
+    resultIconEl.innerHTML = '<svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>';
+  } else {
+    resultIconEl.innerHTML = '<svg class="w-7 h-7 text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="12" y1="6" x2="12" y2="4"/></svg>';
+  }
+  document.getElementById('score-label').textContent = label;
+
+  // Grade breakdown
+  const gradeNames = SUBJECT_LABELS;
+  const breakdown = grades.map((g, i) => `${gradeNames[i].split('(')[0].trim()}: ${g} (${GRADES[g]} pts)`).join(' • ');
+  document.getElementById('breakdown-details').innerHTML = `
+    <strong>Calculation breakdown:</strong><br>
+    JAMB: (${jamb} ÷ 400) × 75 = <strong>${jambPts.toFixed(2)}</strong><br>
+    O'Level grades: ${breakdown}<br>
+    Sum = ${sum}, Avg = ${avg.toFixed(2)}<br>
+    O'Level: (${avg.toFixed(2)} ÷ 100) × 25 = <strong>${oLevelPts.toFixed(2)}</strong><br>
+    <strong>Final Aggregate = ${jambPts.toFixed(2)} + ${oLevelPts.toFixed(2)} = ${total.toFixed(2)}</strong>
+  `;
+
+  // Share section
+  document.getElementById('share-section').classList.remove('hidden');
+  generateShareURL();
+  generateQR();
+
+  showToast(`Score calculated: ${total.toFixed(2)}`);
+}
+
+// ============================================================
+// DEPARTMENT TABLE
+// ============================================================
+function buildSchoolChips() {
+  const container = document.getElementById('school-chips');
+  const all = document.createElement('button');
+  all.className = 'school-chip active';
+  all.textContent = 'All Schools';
+  all.dataset.school = 'ALL';
+  all.onclick = () => setSchoolFilter('ALL', all);
+  container.appendChild(all);
+
+  Object.entries(SCHOOLS).forEach(([code, name]) => {
+    const btn = document.createElement('button');
+    btn.className = 'school-chip';
+    btn.textContent = code;
+    btn.dataset.school = code;
+    btn.title = name;
+    btn.onclick = () => setSchoolFilter(code, btn);
+    container.appendChild(btn);
+  });
+}
+
+function setSchoolFilter(school, el) {
+  activeSchool = school;
+  document.querySelectorAll('.school-chip').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  filterDepts();
+}
+
+function filterDepts() {
+  const q = (document.getElementById('dept-search').value || '').toLowerCase();
+  const sort = document.getElementById('sort-select').value;
+  let depts = [...DEPARTMENTS];
+
+  if (activeSchool !== 'ALL') depts = depts.filter(d => d.school === activeSchool);
+  if (q) depts = depts.filter(d => d.name.toLowerCase().includes(q) || d.code.toLowerCase().includes(q) || d.school.toLowerCase().includes(q));
+
+  if (sort === 'name') depts.sort((a,b) => a.name.localeCompare(b.name));
+  else if (sort === 'cutoff-asc') depts.sort((a,b) => (a.cutoff ?? 0) - (b.cutoff ?? 0));
+  else if (sort === 'cutoff-desc') depts.sort((a,b) => (b.cutoff ?? 0) - (a.cutoff ?? 0));
+  else if (sort === 'status' && currentScore !== null) {
+    depts.sort((a,b) => getStatusOrder(a.cutoff) - getStatusOrder(b.cutoff));
+  } else {
+    depts.sort((a,b) => a.school.localeCompare(b.school) || a.name.localeCompare(b.name));
+  }
+
+  renderDeptTable(depts);
+}
+
+function getStatusOrder(cutoff) {
+  if (cutoff === null) return 3;
+  if (currentScore === null) return 1;
+  if (currentScore >= cutoff) return 0;
+  if (currentScore >= cutoff - 3) return 1;
+  return 2;
+}
+
+function getStatus(cutoff) {
+  if (cutoff === null) return { label: 'TBA', cls: 'bg-gray-100 dark:bg-gray-700 text-gray-400', order: 3 };
+  if (currentScore === null) return { label: '–', cls: 'bg-gray-100 dark:bg-gray-700 text-gray-400', order: 1 };
+  if (currentScore >= cutoff) return { label: 'Safe', cls: 'badge-safe', order: 0 };
+  if (currentScore >= cutoff - 3) return { label: 'Borderline', cls: 'badge-border', order: 1 };
+  return { label: 'Low', cls: 'badge-low', order: 2 };
+}
+
+function renderDeptTable(depts) {
+  const container = document.getElementById('dept-table');
+  const noRes = document.getElementById('no-dept-results');
+
+  if (depts.length === 0) {
+    container.innerHTML = '';
+    noRes.classList.remove('hidden');
+    return;
+  }
+  noRes.classList.add('hidden');
+
+  let lastSchool = null;
+  const rows = [];
+  depts.forEach(d => {
+    const status = getStatus(d.cutoff);
+    const schoolChanged = d.school !== lastSchool;
+    lastSchool = d.school;
+    const schoolLabel = schoolChanged
+      ? `<div class="mt-4 mb-1 px-2"><span class="text-xs font-black uppercase tracking-widest text-[#1565C0] dark:text-blue-500">${d.school} — ${SCHOOLS[d.school]}</span></div>`
+      : '';
+
+    // Progress bar for cutoff relative to 80 (max realistic)
+    const pct = d.cutoff !== null ? Math.min(100, (d.cutoff / 80) * 100) : 0;
+    const myPct = currentScore !== null ? Math.min(100, (currentScore / 80) * 100) : null;
+
+    // Alternatives suggestion for Low depts
+    let altHtml = '';
+    if (currentScore !== null && d.cutoff !== null && currentScore < d.cutoff - 0.01) {
+      const alts = DEPARTMENTS.filter(x => x.school === d.school && x.code !== d.code && x.cutoff !== null && currentScore >= x.cutoff);
+      if (alts.length > 0) {
+        altHtml = `
+          <div class="mt-2">
+            <button onclick="toggleAlt('alt-${d.code}')" class="text-xs text-[#1565C0] dark:text-blue-400 font-semibold hover:underline">
+              <svg class="w-3.5 h-3.5 inline-block mr-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> See ${alts.length} alternative${alts.length>1?'s':''} in ${d.school} →
+            </button>
+            <div id="alt-${d.code}" class="hidden alternatives-panel mt-2">
+              <strong class="text-[#1565C0] dark:text-blue-400 text-xs">You qualify for these in ${d.school}:</strong>
+              <div class="mt-1 flex flex-wrap gap-1.5">
+                ${alts.map(a => `<span class="inline-flex items-center gap-1 bg-white dark:bg-[#0D2B6B] border border-blue-200 dark:border-blue-800 text-[#1565C0] dark:text-blue-400 rounded-full px-2 py-0.5 text-xs font-semibold">${a.code} — ${a.name} <span class="text-gray-400">(${a.cutoff})</span></span>`).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    rows.push(`
+      ${schoolLabel}
+      <div class="dept-row px-3 py-3 rounded-xl dark:text-gray-200">
+        <div class="flex items-start justify-between gap-2">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="font-bold text-sm text-gray-800 dark:text-gray-200">${d.name}</span>
+              ${d.est ? '<span class="text-xs text-gray-400 dark:text-gray-500 italic">★ est.</span>' : ''}
+            </div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">${d.school} • ${d.code} • Cutoff: <strong>${d.cutoff !== null ? d.cutoff : 'TBA'}</strong></div>
+            <div class="mt-2 cut-bar-wrap">
+              <div class="h-full rounded-full" style="width:${pct}%;background:${d.cutoff===null?'#e5e7eb':d.cutoff>=70?'#1565C0':d.cutoff>=55?'#F4A261':'#94a3b8'}"></div>
+            </div>
+            ${(myPct !== null && d.cutoff !== null) ? `<div class="text-xs text-gray-400 mt-0.5">Your score: ${currentScore.toFixed(2)} ${currentScore>=d.cutoff?'▲ above':'▼ below'} cutoff</div>` : ''}
+            ${altHtml}
+          </div>
+          <span class="flex-shrink-0 ${status.cls} rounded-full px-2.5 py-1 text-xs font-bold whitespace-nowrap">${status.label}</span>
+        </div>
+      </div>
+    `);
+  });
+
+  container.innerHTML = rows.join('');
+
+  // Suggestion panel
+  if (currentScore !== null) {
+    const qualifying = DEPARTMENTS.filter(d => d.cutoff !== null && currentScore >= d.cutoff);
+    document.getElementById('suggestion-panel').classList.remove('hidden');
+    document.getElementById('suggest-score').textContent = currentScore.toFixed(2);
+    const list = document.getElementById('suggestion-list');
+    if (qualifying.length === 0) {
+      list.innerHTML = '<p class="text-sm text-gray-500 dark:text-gray-400 col-span-3">Your score is below the minimum cutoff of 47.5. Focus on improving your JAMB score.</p>';
+    } else {
+      list.innerHTML = qualifying.sort((a,b)=>b.cutoff-a.cutoff).map(d => `
+        <div class="bg-[#E3F2FD] dark:bg-[#0D2B6B] border border-blue-200 dark:border-blue-800 rounded-xl p-3">
+          <div class="font-bold text-[#1565C0] dark:text-blue-400 text-xs">${d.code}</div>
+          <div class="text-sm font-semibold text-gray-700 dark:text-gray-300 leading-tight mt-0.5">${d.name}</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">${d.school} • Cutoff: ${d.cutoff}</div>
+          <div class="mt-1.5 text-xs font-bold text-[#1565C0] dark:text-blue-400">+${(currentScore-d.cutoff).toFixed(2)} above cutoff</div>
+        </div>
+      `).join('');
+    }
+  } else {
+    document.getElementById('suggestion-panel').classList.add('hidden');
+  }
+}
+
+function toggleAlt(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('hidden');
+}
+
+function updateDeptScoreLabel() {
+  if (currentScore !== null) {
+    document.getElementById('dept-score-label').textContent = `Your aggregate: ${currentScore.toFixed(2)}`;
+    filterDepts();
+  }
+}
+
+// ============================================================
+// SHARE & URL PARAMS
+// ============================================================
+function generateShareURL() {
+  if (currentScore === null) return;
+  const url = new URL(window.location.href);
+  url.searchParams.set('jamb', currentJAMB);
+  currentGrades.forEach((g, i) => url.searchParams.set(`g${i+1}`, g));
+  url.hash = '#calculator';
+  document.getElementById('share-url').value = url.toString();
+  return url.toString();
+}
+
+function updateURLParams() {
+  if (currentScore === null) return;
+  const url = new URL(window.location.href);
+  url.searchParams.set('jamb', currentJAMB);
+  currentGrades.forEach((g, i) => url.searchParams.set(`g${i+1}`, g));
+  window.history.replaceState({}, '', url.toString());
+}
+
+function readURLParams() {
+  const params = new URLSearchParams(window.location.search);
+  const jamb = params.get('jamb');
+  if (!jamb) return;
+  document.getElementById('jamb-score').value = jamb;
+  for (let i = 1; i <= 5; i++) {
+    const g = params.get(`g${i}`);
+    if (g) {
+      const sel = document.getElementById(`grade-${i-1}`);
+      if (sel) sel.value = g;
+    }
+  }
+  // Auto-calculate
+  setTimeout(calculate, 200);
+}
+
+function generateQR() {
+  const url = generateShareURL();
+  if (!url) return;
+  const container = document.getElementById('qrcode');
+  container.innerHTML = '';
+  try {
+    new QRCode(container, {
+      text: url,
+      width: 120, height: 120,
+      colorDark: '#1565C0', colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  } catch(e) { container.innerHTML = '<p class="text-xs text-gray-400 p-2">QR unavailable</p>'; }
+}
+
+function getShareMsg() {
+  if (currentScore === null) return '';
+  return `My FUTA 2025/2026 Aggregate Score is ${currentScore.toFixed(2)} (JAMB: ${currentJAMB}, using the 75:25 formula). Check yours at: ${generateShareURL() || window.location.href}`;
+}
+
+function shareWhatsApp() {
+  const msg = encodeURIComponent(getShareMsg());
+  window.open(`https://wa.me/?text=${msg}`, '_blank');
+}
+
+function shareTwitter() {
+  const msg = encodeURIComponent(`My FUTA 2025 Aggregate Score is ${currentScore ? currentScore.toFixed(2) : '--'}! #FUTA #JAMB2025\n${generateShareURL() || window.location.href}`);
+  window.open(`https://twitter.com/intent/tweet?text=${msg}`, '_blank');
+}
+
+function shareFacebook() {
+  const url = encodeURIComponent(generateShareURL() || window.location.href);
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+}
+
+function copyResult() {
+  const txt = getShareMsg();
+  navigator.clipboard.writeText(txt).then(() => showToast('Result copied!')).catch(() => {
+    const el = document.createElement('textarea');
+    el.value = txt; document.body.appendChild(el); el.select();
+    document.execCommand('copy'); document.body.removeChild(el);
+    showToast('Result copied!');
+  });
+}
+
+function copyShareUrl() {
+  const url = document.getElementById('share-url').value;
+  navigator.clipboard.writeText(url).then(() => showToast('Link copied!')).catch(() => showToast('Copy failed'));
+}
+
+// ============================================================
+// LOCAL STORAGE HISTORY
+// ============================================================
+function saveResult() {
+  if (currentScore === null) return;
+  const history = JSON.parse(localStorage.getItem('futa_history') || '[]');
+  const entry = {
+    id: Date.now(),
+    date: new Date().toLocaleString('en-NG', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    jamb: currentJAMB,
+    grades: currentGrades,
+    score: currentScore.toFixed(2)
+  };
+  history.unshift(entry);
+  if (history.length > 20) history.pop();
+  localStorage.setItem('futa_history', JSON.stringify(history));
+  showToast('Result saved!');
+  renderHistory();
+}
+
+function renderHistory() {
+  const history = JSON.parse(localStorage.getItem('futa_history') || '[]');
+  const list = document.getElementById('history-list');
+  const empty = document.getElementById('no-history');
+  if (history.length === 0) {
+    list.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  list.innerHTML = history.map(e => `
+    <div class="history-card mb-3 dark:text-gray-200">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <div class="text-xs text-gray-400 dark:text-gray-500 mb-1">${e.date}</div>
+          <div class="text-2xl font-black text-[#1565C0] dark:text-blue-400 font-display">${e.score} <span class="text-sm font-normal text-gray-500 dark:text-gray-400">/ 100</span></div>
+          <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">JAMB: <strong>${e.jamb}</strong> • O'Level: ${(e.grades||[]).join(', ')}</div>
+        </div>
+        <div class="flex flex-col gap-1">
+          <button onclick="loadHistory(${e.id})" class="text-xs bg-[#E3F2FD] dark:bg-[#0D2B6B] text-[#1565C0] dark:text-blue-400 font-semibold px-2 py-1 rounded-lg hover:bg-blue-100 transition-colors">Load</button>
+          <button onclick="deleteHistory(${e.id})" class="text-xs bg-red-50 text-red-500 font-semibold px-2 py-1 rounded-lg hover:bg-red-100 transition-colors">Delete</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function loadHistory(id) {
+  const history = JSON.parse(localStorage.getItem('futa_history') || '[]');
+  const e = history.find(x => x.id === id);
+  if (!e) return;
+  document.getElementById('jamb-score').value = e.jamb;
+  (e.grades || []).forEach((g, i) => {
+    const sel = document.getElementById(`grade-${i}`);
+    if (sel) sel.value = g;
+  });
+  showSection('calculator');
+  setTimeout(calculate, 100);
+}
+
+function deleteHistory(id) {
+  let history = JSON.parse(localStorage.getItem('futa_history') || '[]');
+  history = history.filter(x => x.id !== id);
+  localStorage.setItem('futa_history', JSON.stringify(history));
+  renderHistory();
+  showToast('Entry deleted');
+}
+
+function clearHistory() {
+  if (!confirm('Clear all saved calculations?')) return;
+  localStorage.removeItem('futa_history');
+  renderHistory();
+  showToast('History cleared');
+}
+
+// ============================================================
+// DARK MODE
+// ============================================================
+function toggleDark() {
+  isDark = !isDark;
+  document.documentElement.classList.toggle('dark', isDark);
+  document.getElementById('dark-icon').innerHTML = isDark ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>' : '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  localStorage.setItem('futa_theme', isDark ? 'dark' : 'light');
+}
+
+function loadTheme() {
+  const saved = localStorage.getItem('futa_theme');
+  const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  isDark = saved ? saved === 'dark' : prefers;
+  document.documentElement.classList.toggle('dark', isDark);
+  document.getElementById('dark-icon').innerHTML = isDark ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>' : '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+}
+
+// ============================================================
+// SECTION NAVIGATION
+// ============================================================
+function showSection(name) {
+  ['calculator', 'departments', 'guide', 'history'].forEach(s => {
+    const el = document.getElementById(`section-${s}`);
+    const tab = document.getElementById(`tab-${s === 'departments' ? 'depts' : s}`);
+    if (el) {
+      el.classList.remove('section-visible');
+      el.classList.add('section-hidden');
+    }
+    if (tab) {
+      tab.classList.remove('active');
+      tab.style.color = '';
+    }
+  });
+  const target = document.getElementById(`section-${name}`);
+  const targetTab = document.getElementById(`tab-${name === 'departments' ? 'depts' : name}`);
+  if (target) {
+    target.classList.remove('section-hidden');
+    target.classList.add('section-visible');
+  }
+  if (targetTab) {
+    targetTab.classList.add('active');
+    targetTab.style.color = 'white';
+  }
+  if (name === 'departments') {
+    filterDepts();
+  }
+  if (name === 'history') {
+    renderHistory();
+  }
+  window.scrollTo({ top: 280, behavior: 'smooth' });
+}
+
+// ============================================================
+// DISCLAIMER MODAL
+// ============================================================
+function closeDisclaimer() {
+  document.getElementById('disclaimer-modal').style.display = 'none';
+  localStorage.setItem('futa_disclaimer_seen', '1');
+}
+
+function openDisclaimer() {
+  document.getElementById('disclaimer-modal').style.display = 'flex';
+}
+
+// Check if already seen
+if (localStorage.getItem('futa_disclaimer_seen') === '1') {
+  document.getElementById('disclaimer-modal').style.display = 'none';
+}
+
+// ============================================================
+// RESET
+// ============================================================
+function resetForm() {
+  document.getElementById('jamb-score').value = '';
+  document.getElementById('jamb-error').classList.add('hidden');
+  document.getElementById('jamb-preview').classList.add('hidden');
+  document.getElementById('olevel-preview').classList.add('hidden');
+  for (let i = 0; i < 5; i++) {
+    const sel = document.getElementById(`grade-${i}`);
+    if (sel) sel.value = '';
+  }
+  document.getElementById('result-card').classList.add('hidden');
+  document.getElementById('no-result-placeholder').classList.remove('hidden');
+  document.getElementById('share-section').classList.add('hidden');
+  document.getElementById('save-btn').classList.add('hidden');
+  currentScore = null; currentJAMB = null; currentOLevel = null; currentGrades = [];
+  // Clear URL params
+  const url = new URL(window.location.href);
+  url.search = '';
+  window.history.replaceState({}, '', url.toString());
+  document.getElementById('dept-score-label').textContent = 'Calculate your score first';
+  showToast('Form reset');
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg, color) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.style.background = color === 'red' ? '#ef4444' : '#1565C0';
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>
